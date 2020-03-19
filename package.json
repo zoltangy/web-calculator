@@ -9,7 +9,8 @@
     "@testing-library/user-event": "^7.2.1",
     "react": "^16.13.0",
     "react-dom": "^16.13.0",
-    "react-scripts": "3.4.0"
+    "react-scripts": "3.4.0",
+    "styled-components": "^5.0.1"
   },
   "scripts": {
     "start": "react-scripts start",
@@ -35,6 +36,9 @@
     ]
   },
   "devDependencies": {
-    "gh-pages": "^2.2.0"
+    "enzyme": "^3.11.0",
+    "enzyme-adapter-react-16": "^1.15.2",
+    "gh-pages": "^2.2.0",
+    "react-test-renderer": "^16.13.0"
   }
 }
