@@ -35,6 +35,7 @@ function App() {
         <Display
           display={state.display}
           aggregate={state.aggregate + state.tempValue}
+          formulaLogic={state.formulaLogic}
         />
         <Button id="clear" text="AC" handleClick={dispatch} doubleX />
         <Button id="mode" text="Mode" handleClick={dispatch} />

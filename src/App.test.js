@@ -191,7 +191,9 @@ describe("formula logic tests", () => {
 describe("immediate execution logic tests", () => {
   test("basic function", () => {
     const wrapper = mount(<App />);
+    expect(wrapper.find("p#modeDisplay").text()).toMatch(/Formula/);
     wrapper.find("button#mode").simulate("click");
+    expect(wrapper.find("p#modeDisplay").text()).toMatch(/Immediate/);
     wrapper.find("button#one").simulate("click");
     wrapper.find("button#add").simulate("click");
     wrapper.find("button#one").simulate("click");
