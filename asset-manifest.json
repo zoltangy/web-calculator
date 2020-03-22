@@ -1,23 +1,20 @@
 {
   "files": {
-    "main.css": "/web-calculator/static/css/main.5f361e03.chunk.css",
-    "main.js": "/web-calculator/static/js/main.dd6cc3e9.chunk.js",
-    "main.js.map": "/web-calculator/static/js/main.dd6cc3e9.chunk.js.map",
+    "main.js": "/web-calculator/static/js/main.3d0aad32.chunk.js",
+    "main.js.map": "/web-calculator/static/js/main.3d0aad32.chunk.js.map",
     "runtime-main.js": "/web-calculator/static/js/runtime-main.3483dad7.js",
     "runtime-main.js.map": "/web-calculator/static/js/runtime-main.3483dad7.js.map",
-    "static/js/2.c4a13faf.chunk.js": "/web-calculator/static/js/2.c4a13faf.chunk.js",
-    "static/js/2.c4a13faf.chunk.js.map": "/web-calculator/static/js/2.c4a13faf.chunk.js.map",
+    "static/js/2.3fc85e49.chunk.js": "/web-calculator/static/js/2.3fc85e49.chunk.js",
+    "static/js/2.3fc85e49.chunk.js.map": "/web-calculator/static/js/2.3fc85e49.chunk.js.map",
     "index.html": "/web-calculator/index.html",
-    "precache-manifest.c19bbddcde81196cd9913bdd33d27e6e.js": "/web-calculator/precache-manifest.c19bbddcde81196cd9913bdd33d27e6e.js",
+    "precache-manifest.c9281cddba095707e4648d08db911f2a.js": "/web-calculator/precache-manifest.c9281cddba095707e4648d08db911f2a.js",
     "service-worker.js": "/web-calculator/service-worker.js",
-    "static/css/main.5f361e03.chunk.css.map": "/web-calculator/static/css/main.5f361e03.chunk.css.map",
-    "static/js/2.c4a13faf.chunk.js.LICENSE.txt": "/web-calculator/static/js/2.c4a13faf.chunk.js.LICENSE.txt",
-    "static/media/logo.svg": "/web-calculator/static/media/logo.5d5d9eef.svg"
+    "static/js/2.3fc85e49.chunk.js.LICENSE.txt": "/web-calculator/static/js/2.3fc85e49.chunk.js.LICENSE.txt",
+    "static/media/Display.ttf": "/web-calculator/static/media/Display.6f15c220.ttf"
   },
   "entrypoints": [
     "static/js/runtime-main.3483dad7.js",
-    "static/js/2.c4a13faf.chunk.js",
-    "static/css/main.5f361e03.chunk.css",
-    "static/js/main.dd6cc3e9.chunk.js"
+    "static/js/2.3fc85e49.chunk.js",
+    "static/js/main.3d0aad32.chunk.js"
   ]
 }
