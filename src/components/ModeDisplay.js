@@ -2,13 +2,14 @@ import React from "react";
 import styled from "styled-components";
 
 const StyledModeDisplay = styled.p`
-  margin: 0px;
   width: 100%;
-  height: calc((100% / (7 * 2)));
-  font-family: "Display", sans-serif;
+  height: calc((100% / 4));
+  margin: 0px;
+  padding: 5px;
+  font-family: monospace;
   font-weight: normal;
-  color: red;
-  background-color: #132133;
+  color: #cddeaa;
+  background-color: #44656b;
 `;
 
 const ModeDisplay = props => {

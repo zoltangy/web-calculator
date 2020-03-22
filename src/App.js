@@ -2,7 +2,7 @@ import React, { useReducer } from "react";
 import styled from "styled-components";
 import { Normalize } from "styled-normalize";
 import GlobalStyle from "./GlobalStyle";
-import ModeDisplay from "./components/ModeDisplay";
+
 import Display from "./components/Display";
 import Button from "./components/Button";
 import math from "mathjs-expression-parser";
@@ -16,7 +16,8 @@ const StyledApp = styled.div`
 `;
 
 const Calculator = styled.div`
-  border: 1px solid black;
+  border: 7px solid #1b454f;
+  background-color: #1b454f;
   width: 320px;
   height: 455px;
   display: flex;
@@ -31,7 +32,6 @@ function App() {
       <Calculator>
         <Normalize />
         <GlobalStyle />
-        <ModeDisplay formulaLogic={state.formulaLogic} />
         <Display
           display={state.display}
           aggregate={state.aggregate + state.tempValue}

@@ -1,38 +1,23 @@
 import React from "react";
 import styled from "styled-components";
+import ModeDisplay from "./ModeDisplay";
+import AggregateDisplay from "./AggregateDisplay";
+import ResultDisplay from "./ResultDisplay";
 
-const StyledDisplay = styled.p`
-  margin: 0px;
+const StyledDisplay = styled.div`
+  height: calc((100% / 7) * 2);
   width: 100%;
-  height: calc(((100% / 7) * 1.5) / 3 * 2);
-  font-family: "Display", sans-serif;
-  font-weight: normal;
-  color: red;
-  text-align: right;
-
-  background-color: #132133;
-`;
-
-const StyledAggregateDisplay = styled.p`
-  margin: 0px;
-  width: 100%;
-  height: calc(((100% / 7) * 1.5) / 3);
-  font-family: "Display", sans-serif;
-  font-weight: normal;
-  font-style: italic;
-  color: red;
-  text-align: right;
-  background-color: #132133;
+  display: flex;
+  flex-direction: column;
 `;
 
 const Display = props => {
   return (
-    <>
-      <StyledAggregateDisplay id="aggregateDisplay">
-        {props.aggregate}
-      </StyledAggregateDisplay>
-      <StyledDisplay id="display">{props.display}</StyledDisplay>
-    </>
+    <StyledDisplay>
+      <ModeDisplay formulaLogic={props.formulaLogic} />
+      <AggregateDisplay aggregate={props.aggregate} />
+      <ResultDisplay display={props.display} />
+    </StyledDisplay>
   );
 };
 
