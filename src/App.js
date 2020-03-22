@@ -1,9 +1,10 @@
-import React, { useReducer } from "react";
+import React, { useReducer, useState } from "react";
 import styled, { ThemeProvider } from "styled-components";
 import { Normalize } from "styled-normalize";
 import { darkTheme, lightTheme } from "./Themes";
 import GlobalStyle from "./GlobalStyle";
 
+import ThemeSelector from "./components/ThemeSelector.js";
 import Display from "./components/Display";
 import Button from "./components/Button";
 import math from "mathjs-expression-parser";
@@ -12,6 +13,7 @@ const StyledApp = styled.div`
   height: 100vh;
   width: 100vw;
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
 `;
@@ -27,10 +29,15 @@ const Calculator = styled.div`
 
 function App() {
   const [state, dispatch] = useReducer(reducer, init());
+  const [themeToggle, setTheme] = useState(true);
 
   return (
     <StyledApp>
-      <ThemeProvider theme={lightTheme}>
+      <ThemeProvider theme={themeToggle ? lightTheme : darkTheme}>
+        <ThemeSelector
+          checked={themeToggle}
+          handleToggle={() => setTheme(!themeToggle)}
+        />
         <Calculator>
           <Normalize />
           <GlobalStyle />

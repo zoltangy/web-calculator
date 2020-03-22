@@ -24,7 +24,6 @@ const StyledButton = styled.button`
   font-family: Arial;
   font-size: 15px;
   font-weight: bold;
-  padding: 11px 23px;
   text-decoration: none;
   text-shadow: 0px -1px 0px ${props => props.theme.buttonTextShadow};
   &:hover {
