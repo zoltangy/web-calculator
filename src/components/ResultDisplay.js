@@ -9,8 +9,8 @@ const StyledResultDisplay = styled.p`
   font-family: "Display", sans-serif;
   font-weight: normal;
   font-size: 24px;
-  color: #cddeaa;
-  background-color: #44656b;
+  color: ${props => props.theme.color};
+  background-color: ${props => props.theme.display};
   text-align: right;
   display: flex;
   justify-content: flex-end;

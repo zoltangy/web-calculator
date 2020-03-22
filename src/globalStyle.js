@@ -19,12 +19,9 @@ const GlobalStyle = createGlobalStyle`
   body {
     padding: 0;
     margin: 0;
-    background-color: #d9d9d9;
+    background-color: ${props => props.theme.bg};
     font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
   }
-
-
-
 `;
 
 export default GlobalStyle;

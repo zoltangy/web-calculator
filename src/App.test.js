@@ -186,6 +186,15 @@ describe("formula logic tests", () => {
     expect(wrapper.find("p#display").text()).toBe("3");
     expect(wrapper.find("p#aggregateDisplay").text()).toBe("2+1=");
   });
+
+  test("zero added if operand is pressed at init", () => {
+    const wrapper = mount(<App />);
+    wrapper.find("button#add").simulate("click");
+    wrapper.find("button#one").simulate("click");
+    wrapper.find("button#equals").simulate("click");
+    expect(wrapper.find("p#display").text()).toBe("1");
+    expect(wrapper.find("p#aggregateDisplay").text()).toBe("0+1=");
+  });
 }); // end of formula logic tests
 
 describe("immediate execution logic tests", () => {
@@ -376,5 +385,15 @@ describe("immediate execution logic tests", () => {
     wrapper.find("button#equals").simulate("click");
     expect(wrapper.find("p#display").text()).toBe("3");
     expect(wrapper.find("p#aggregateDisplay").text()).toBe("2+1=");
+  });
+
+  test("zero added if operand is pressed at init", () => {
+    const wrapper = mount(<App />);
+    wrapper.find("button#mode").simulate("click");
+    wrapper.find("button#add").simulate("click");
+    wrapper.find("button#one").simulate("click");
+    wrapper.find("button#equals").simulate("click");
+    expect(wrapper.find("p#display").text()).toBe("1");
+    expect(wrapper.find("p#aggregateDisplay").text()).toBe("0+1=");
   });
 });

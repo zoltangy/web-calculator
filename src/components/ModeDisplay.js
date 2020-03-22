@@ -8,8 +8,8 @@ const StyledModeDisplay = styled.p`
   padding: 5px;
   font-family: monospace;
   font-weight: normal;
-  color: #cddeaa;
-  background-color: #44656b;
+  color: ${props => props.theme.color};
+  background-color: ${props => props.theme.display};
 `;
 
 const ModeDisplay = props => {

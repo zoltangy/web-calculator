@@ -9,8 +9,8 @@ const StyledAggregateDisplay = styled.p`
   font-family: "Display", sans-serif;
   font-weight: normal;
   font-style: italic;
-  color: #cddeaa;
-  background-color: #44656b;
+  color: ${props => props.theme.color};
+  background-color: ${props => props.theme.display};
   text-align: right;
 `;
 

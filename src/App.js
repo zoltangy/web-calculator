@@ -1,6 +1,7 @@
 import React, { useReducer } from "react";
-import styled from "styled-components";
+import styled, { ThemeProvider } from "styled-components";
 import { Normalize } from "styled-normalize";
+import { darkTheme, lightTheme } from "./Themes";
 import GlobalStyle from "./GlobalStyle";
 
 import Display from "./components/Display";
@@ -16,8 +17,8 @@ const StyledApp = styled.div`
 `;
 
 const Calculator = styled.div`
-  border: 7px solid #1b454f;
-  background-color: #1b454f;
+  border: 7px solid ${props => props.theme.border};
+  background-color: ${props => props.theme.border};
   width: 320px;
   height: 455px;
   display: flex;
@@ -29,37 +30,39 @@ function App() {
 
   return (
     <StyledApp>
-      <Calculator>
-        <Normalize />
-        <GlobalStyle />
-        <Display
-          display={state.display}
-          aggregate={state.aggregate + state.tempValue}
-          formulaLogic={state.formulaLogic}
-        />
-        <Button id="clear" text="AC" handleClick={dispatch} doubleX />
-        <Button id="mode" text="Mode" handleClick={dispatch} />
-        <Button id="divide" text="/" handleClick={dispatch} />
+      <ThemeProvider theme={lightTheme}>
+        <Calculator>
+          <Normalize />
+          <GlobalStyle />
+          <Display
+            display={state.display}
+            aggregate={state.aggregate + state.tempValue}
+            formulaLogic={state.formulaLogic}
+          />
+          <Button id="clear" text="AC" handleClick={dispatch} doubleX />
+          <Button id="mode" text="Mode" handleClick={dispatch} />
+          <Button id="divide" text="/" handleClick={dispatch} />
 
-        <Button id="seven" text="7" handleClick={dispatch} />
-        <Button id="eight" text="8" handleClick={dispatch} />
-        <Button id="nine" text="9" handleClick={dispatch} />
-        <Button id="multiply" text="X" handleClick={dispatch} />
+          <Button id="seven" text="7" handleClick={dispatch} />
+          <Button id="eight" text="8" handleClick={dispatch} />
+          <Button id="nine" text="9" handleClick={dispatch} />
+          <Button id="multiply" text="X" handleClick={dispatch} />
 
-        <Button id="four" text="4" handleClick={dispatch} />
-        <Button id="five" text="5" handleClick={dispatch} />
-        <Button id="six" text="6" handleClick={dispatch} />
-        <Button id="subtract" text="-" handleClick={dispatch} />
+          <Button id="four" text="4" handleClick={dispatch} />
+          <Button id="five" text="5" handleClick={dispatch} />
+          <Button id="six" text="6" handleClick={dispatch} />
+          <Button id="subtract" text="-" handleClick={dispatch} />
 
-        <Button id="one" text="1" handleClick={dispatch} />
-        <Button id="two" text="2" handleClick={dispatch} />
-        <Button id="three" text="3" handleClick={dispatch} />
-        <Button id="add" text="+" handleClick={dispatch} />
+          <Button id="one" text="1" handleClick={dispatch} />
+          <Button id="two" text="2" handleClick={dispatch} />
+          <Button id="three" text="3" handleClick={dispatch} />
+          <Button id="add" text="+" handleClick={dispatch} />
 
-        <Button id="zero" text="0" handleClick={dispatch} doubleX />
-        <Button id="decimal" text="." handleClick={dispatch} />
-        <Button id="equals" text="=" handleClick={dispatch} />
-      </Calculator>
+          <Button id="zero" text="0" handleClick={dispatch} doubleX />
+          <Button id="decimal" text="." handleClick={dispatch} />
+          <Button id="equals" text="=" handleClick={dispatch} />
+        </Calculator>
+      </ThemeProvider>
     </StyledApp>
   );
 }
@@ -115,7 +118,7 @@ function formulaLogic(state, action) {
         .replace(/([-+*/]+)0$/, (match, p1) => {
           return p1;
         })
-        .replace(/^0(?!\.)/, "") + action.type;
+        .replace(/^0(?![.*-/+])/, "") + action.type;
   } else {
     // handling operands, '.', '='
     switch (action.type) {
@@ -123,6 +126,7 @@ function formulaLogic(state, action) {
       case "/":
       case "X":
         let operand = action.type === "X" ? "*" : action.type;
+        if (aggregate === "") aggregate = "0";
         // Overwrite operand when pressing one after another
         aggregate = aggregate.replace(/[+\-*/.]+$/, "") + operand;
         display = operand;
@@ -211,6 +215,7 @@ function immediateLogic(state, action) {
       case "/":
       case "X":
         let operand = action.type === "X" ? "*" : action.type;
+        if (aggregate === "" && tempValue === "") aggregate = "0";
         // Overwrite operand when pressing one after another
         if (isNaN(Number(tempValue.slice(-1)))) {
           tempValue = tempValue.replace(/[+\-*/.]+$/, "");

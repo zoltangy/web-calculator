@@ -10,22 +10,30 @@ const StyledButton = styled.button`
     `};
 
   height: calc(100% / 7);
-  box-shadow: inset 0px 1px 3px 0px #91b8b3;
-  background: linear-gradient(to bottom, #768d87 5%, #6c7c7c 100%);
-  background-color: #768d87;
+  box-shadow: inset 0px 1px 3px 0px ${props => props.theme.buttonShadow};
+  background: linear-gradient(
+    to bottom,
+    ${props => props.theme.buttonBg1} 5%,
+    ${props => props.theme.buttonBg2} 100%
+  );
+  background-color: ${props => props.theme.buttonBg1};
   border-radius: 5px;
-  border: 1px solid #566963;
+  border: 1px solid ${props => props.theme.buttonBorder};
   display: inline-block;
-  color: #dce3ca;
+  color: ${props => props.theme.buttonText};
   font-family: Arial;
   font-size: 15px;
   font-weight: bold;
   padding: 11px 23px;
   text-decoration: none;
-  text-shadow: 0px -1px 0px #2b665e;
+  text-shadow: 0px -1px 0px ${props => props.theme.buttonTextShadow};
   &:hover {
-    background: linear-gradient(to bottom, #6c7c7c 5%, #768d87 100%);
-    background-color: #6c7c7c;
+    background: linear-gradient(
+      to bottom,
+      ${props => props.theme.buttonBg2} 5%,
+      ${props => props.theme.buttonBg1} 100%
+    );
+    background-color: ${props => props.theme.buttonBg2};
   }
   &:active {
     position: relative;
