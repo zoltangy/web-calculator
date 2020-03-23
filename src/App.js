@@ -85,105 +85,6 @@ function init(formulaLogic = true) {
 }
 
 function reducer(state, action) {
-  if (action.type === "Mode") {
-    return init(!state.formulaLogic);
-  }
-
-  if (action.type === "AC") {
-    return init(state.formulaLogic);
-  }
-
-  if (state.formulaLogic) {
-    return formulaLogic(state, action);
-  } else {
-    return immediateLogic(state, action);
-  }
-}
-
-function formulaLogic(state, action) {
-  var display = state.display;
-  var aggregate = state.aggregate;
-
-  // new calc or result carry over
-  if (aggregate.slice(-1) === "=" && action.type !== "=") {
-    let reg = /(\+|-|X|\/)/;
-    if (reg.test(action.type)) {
-      // previous result should carry over for new calculation
-      aggregate = display;
-    } else {
-      // start new calculation
-      aggregate = "";
-    }
-    display = "0";
-  }
-
-  // handling numbers
-  if (!isNaN(Number(action.type))) {
-    display = display.replace(/^[+-/*]+/, "").replace(/^0$/, "") + action.type;
-    aggregate =
-      aggregate
-        .replace(/([-+*/]+)0$/, (match, p1) => {
-          return p1;
-        })
-        .replace(/^0(?![.*-/+])/, "") + action.type;
-  } else {
-    // handling operands, '.', '='
-    switch (action.type) {
-      case "+":
-      case "/":
-      case "X":
-        let operand = action.type === "X" ? "*" : action.type;
-        if (aggregate === "") aggregate = "0";
-        // Overwrite operand when pressing one after another
-        aggregate = aggregate.replace(/[+\-*/.]+$/, "") + operand;
-        display = operand;
-        break;
-
-      case "-":
-        // pushing multiple '-' should be ignored
-        if (aggregate.slice(-1) !== "-") {
-          aggregate += action.type;
-          display = action.type;
-        }
-        break;
-
-      case ".":
-        // ensure only one decimal per number
-        if (!display.includes(".")) {
-          // add implicit zero when decimal pushed after operand or after init
-          if (isNaN(Number(aggregate.slice(-1))) || aggregate === "") {
-            aggregate += "0" + action.type;
-            display = "0" + action.type;
-          } else {
-            // normal case, just add decimal
-            aggregate += action.type;
-            display += action.type;
-          }
-        }
-        break;
-
-      case "=":
-        // pushing '=' more than once or at init should be ignored
-        if (aggregate.slice(-1) !== "=" && aggregate !== "") {
-          // remove unfinished operand
-          aggregate = aggregate.replace(/[+\-*/.]+$/, "");
-          display = math.eval(aggregate).toString();
-          aggregate += action.type;
-        }
-        break;
-
-      default:
-        throw new Error();
-    }
-  }
-  return {
-    ...state,
-    display: display,
-    aggregate: aggregate
-  };
-}
-
-function immediateLogic(state, action) {
   var display = state.display;
   var aggregate = state.aggregate;
   var tempResult = state.tempResult;
@@ -205,79 +106,102 @@ function immediateLogic(state, action) {
     tempValue = "";
   }
 
-  // handling numbers
-  if (!isNaN(Number(action.type))) {
-    tempValue =
-      tempValue
-        .replace(/([-+*/]+)0$/, (match, p1) => {
-          return p1;
-        })
-        .replace(/^0(?!\.)/, "") + action.type;
-    display =
-      tempResult === "" ? "" : math.eval(tempResult + tempValue).toString();
-  } else {
-    // handling operands, '.', '='
-    switch (action.type) {
-      case "+":
-      case "/":
-      case "X":
-        let operand = action.type === "X" ? "*" : action.type;
-        if (aggregate === "" && tempValue === "") aggregate = "0";
-        // Overwrite operand when pressing one after another
-        if (isNaN(Number(tempValue.slice(-1)))) {
-          tempValue = tempValue.replace(/[+\-*/.]+$/, "");
-        } else {
+  switch (action.type) {
+    case "AC":
+      return init(state.formulaLogic);
+
+    case "Mode":
+      return init(!state.formulaLogic);
+
+    case "0":
+    case "1":
+    case "2":
+    case "3":
+    case "4":
+    case "5":
+    case "6":
+    case "7":
+    case "8":
+    case "9":
+      tempValue =
+        tempValue
+          .replace(/([-+*/]+)0$/, (match, p1) => {
+            return p1;
+          })
+          .replace(/^0(?!\.)/, "") + action.type;
+      break;
+
+    case "+":
+    case "/":
+    case "X":
+      let operand = action.type === "X" ? "*" : action.type;
+      if (aggregate === "" && tempValue === "") aggregate = "0";
+      // Overwrite operand when pressing one after another
+      if (isNaN(Number(tempValue.slice(-1)))) {
+        tempValue = tempValue.replace(/[+\-*/.]+$/, "");
+      } else {
+        tempResult = display === "" ? tempValue : display;
+        aggregate += tempValue;
+        tempValue = "";
+      }
+      tempValue += operand;
+      break;
+
+    case "-":
+      // pushing multiple '-' should be ignored
+      if (tempValue.slice(-1) !== "-") {
+        if (!isNaN(Number(tempValue.slice(-1)))) {
           tempResult = display === "" ? tempValue : display;
           aggregate += tempValue;
           tempValue = "";
         }
-        tempValue += operand;
-        display = tempResult;
-        break;
+        tempValue += action.type;
+      }
+      break;
 
-      case "-":
-        // pushing multiple '-' should be ignored
-        if (tempValue.slice(-1) !== "-") {
-          if (!isNaN(Number(tempValue.slice(-1)))) {
-            tempResult = display === "" ? tempValue : display;
-            aggregate += tempValue;
-            tempValue = "";
-          }
-          tempValue += action.type;
-          display = tempResult;
+    case ".":
+      // ensure only one decimal per number
+      if (!tempValue.includes(".")) {
+        // add implicit zero when decimal pushed after operand or after init
+        if (isNaN(Number(tempValue.slice(-1))) || tempValue === "") {
+          tempValue += "0";
         }
-        break;
+        tempValue += action.type;
+      }
+      break;
 
-      case ".":
-        // ensure only one decimal per number
-        if (!tempValue.includes(".")) {
-          // add implicit zero when decimal pushed after operand or after init
-          if (isNaN(Number(tempValue.slice(-1))) || tempValue === "") {
-            tempValue += "0" + action.type;
-          } else {
-            tempValue += action.type;
-          }
+    case "=":
+      // pushing '=' more than once or at init should be ignored
+      if (tempValue.slice(-1) !== "=" && aggregate !== "") {
+        // remove unfinished operand
+        if (isNaN(Number(tempValue.slice(-1)))) {
+          tempValue = tempValue.slice(0, -1);
         }
-        break;
+        tempResult = display === "" ? tempValue : display;
+        aggregate += tempValue;
+        tempValue = action.type;
+      }
+      break;
 
-      case "=":
-        // pushing '=' more than once or at init should be ignored
-        if (tempValue.slice(-1) !== "=" && aggregate !== "") {
-          // remove unfinished operand
-          if (isNaN(Number(tempValue.slice(-1)))) {
-            tempValue = tempValue.slice(0, -1);
-          }
-          tempResult = display === "" ? tempValue : display;
-          aggregate += tempValue;
-          tempValue = action.type;
-          display = tempResult;
-        }
-        break;
-
-      default:
-        throw new Error();
-    }
+    default:
+      throw new Error();
   }
+
+  // handle display based on logic
+  if (state.formulaLogic) {
+    if (aggregate !== "" && action.type === "=")
+      display = math.eval(aggregate).toString();
+    else if (tempValue === "") display = "0";
+    else display = tempValue.replace(/^[+\-*/.=]+/, "");
+  } else {
+    if (tempValue === "" && aggregate === "") display = "0";
+    else if (tempValue === "") display = "";
+    else
+      display = math
+        .eval(tempResult + tempValue.replace(/[+\-*/.=]+$/, ""))
+        .toString();
+  }
+
   return {
     ...state,
     display: display,

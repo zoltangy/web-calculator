@@ -18,6 +18,8 @@ describe("formula logic tests", () => {
   test("1+1=2", () => {
     const wrapper = mount(<App />);
     wrapper.find("button#one").simulate("click");
+    expect(wrapper.find("p#display").text()).toBe("1");
+    expect(wrapper.find("p#aggregateDisplay").text()).toBe("1");
     wrapper.find("button#add").simulate("click");
     wrapper.find("button#one").simulate("click");
     wrapper.find("button#equals").simulate("click");
@@ -238,7 +240,7 @@ describe("immediate execution logic tests", () => {
     zero.simulate("click");
     zero.simulate("click");
     zero.simulate("click");
-    expect(wrapper.find("p#display").text()).toBe("");
+    expect(wrapper.find("p#display").text()).toBe("0");
     expect(wrapper.find("p#aggregateDisplay").text()).toBe("0");
   });
 
