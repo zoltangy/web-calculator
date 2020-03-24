@@ -40,7 +40,7 @@ const StyledButton = styled.button`
   }
 `;
 
-const Button = props => {
+export default function Button(props) {
   return (
     <StyledButton
       id={props.id}
@@ -52,6 +52,4 @@ const Button = props => {
       {props.text}
     </StyledButton>
   );
-};
-
-export default Button;
+}

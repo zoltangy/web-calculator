@@ -12,11 +12,9 @@ const StyledModeDisplay = styled.p`
   background-color: ${props => props.theme.display};
 `;
 
-const ModeDisplay = props => {
+export default function ModeDisplay(props) {
   let text = props.formulaLogic
     ? "Mode: Formula logic"
     : "Mode: Immediate execution logic";
   return <StyledModeDisplay id="modeDisplay">{text}</StyledModeDisplay>;
-};
-
-export default ModeDisplay;
+}

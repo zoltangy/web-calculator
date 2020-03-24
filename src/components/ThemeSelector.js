@@ -42,7 +42,7 @@ const StyledCheckBox = styled.input.attrs({ type: "checkbox" })`
   }
 `;
 
-const ThemeSelector = props => {
+export default function ThemeSelector(props) {
   return (
     <Wrapper>
       <StyledCheckBox
@@ -53,6 +53,4 @@ const ThemeSelector = props => {
       />
     </Wrapper>
   );
-};
-
-export default ThemeSelector;
+}

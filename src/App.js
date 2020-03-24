@@ -1,13 +1,12 @@
 import React, { useReducer, useState } from "react";
 import styled, { ThemeProvider } from "styled-components";
-import { Normalize } from "styled-normalize";
 import { darkTheme, lightTheme } from "./Themes";
-import GlobalStyle from "./GlobalStyle";
+import math from "mathjs-expression-parser";
 
-import ThemeSelector from "./components/ThemeSelector.js";
+import GlobalStyle from "./GlobalStyle";
+import ThemeSelector from "./components/ThemeSelector";
 import Display from "./components/Display";
 import Button from "./components/Button";
-import math from "mathjs-expression-parser";
 
 const StyledApp = styled.div`
   height: 100vh;
@@ -34,13 +33,12 @@ function App() {
   return (
     <StyledApp>
       <ThemeProvider theme={themeToggle ? lightTheme : darkTheme}>
+        <GlobalStyle />
         <ThemeSelector
           checked={themeToggle}
           handleToggle={() => setTheme(!themeToggle)}
         />
         <Calculator>
-          <Normalize />
-          <GlobalStyle />
           <Display
             display={state.display}
             aggregate={state.aggregate + state.tempValue}
@@ -90,23 +88,54 @@ function reducer(state, action) {
   var tempResult = state.tempResult;
   var tempValue = state.tempValue;
 
+  var newChar = action.type === "X" ? "*" : action.type;
+
+  function isLastCharOperand() {
+    return isNaN(Number(tempValue.slice(-1)));
+  }
+
+  function removeTrailingDecimal(str) {
+    return str.replace(/[.]$/, "");
+  }
+
+  function removeTrailingMinus(str) {
+    return str.replace(/-+$/, "");
+  }
+
+  function removeTrailingOperand(str) {
+    return str.replace(/[-+*/=.]+$/, "");
+  }
+
+  function removeLeadingZerosInNumbers(str) {
+    return str.replace(/^([-+*/]*)0$/, (match, p1) => {
+      return p1;
+    });
+  }
+
+  function lastCharEquals(str) {
+    return tempValue.slice(-1) === str;
+  }
+
+  function evaluateMathFormula(str) {
+    return math.format(math.eval(str), 7);
+  }
+
   // new calc or result carry over
-  if (tempValue.slice(-1) === "=" && action.type !== "=") {
-    let reg = /(\+|-|X|\/)/;
-    if (reg.test(action.type)) {
+  if (lastCharEquals("=") && newChar !== "=") {
+    let reg = /(\+|-|\*|\/)/;
+    if (reg.test(newChar)) {
       // previous result should carry over for new calculation
       aggregate = display;
       tempResult = display;
     } else {
       // start new calculation
       aggregate = "";
-      display = "0";
       tempResult = "";
     }
     tempValue = "";
   }
 
-  switch (action.type) {
+  switch (newChar) {
     case "AC":
       return init(state.formulaLogic);
 
@@ -123,63 +152,46 @@ function reducer(state, action) {
     case "7":
     case "8":
     case "9":
-      tempValue =
-        tempValue
-          .replace(/([-+*/]+)0$/, (match, p1) => {
-            return p1;
-          })
-          .replace(/^0(?!\.)/, "") + action.type;
+      if (tempValue.length >= 17 || (aggregate + tempValue).length > 25) {
+        return state;
+      }
+      tempValue = removeLeadingZerosInNumbers(tempValue);
+      tempValue += newChar;
       break;
 
     case "+":
+    case "-":
     case "/":
-    case "X":
-      let operand = action.type === "X" ? "*" : action.type;
-      if (aggregate === "" && tempValue === "") aggregate = "0";
-      // Overwrite operand when pressing one after another
-      if (isNaN(Number(tempValue.slice(-1)))) {
-        tempValue = tempValue.replace(/[+\-*/.]+$/, "");
+    case "*":
+    case "=":
+      // initial equal ignored
+      if (aggregate === "" && tempValue === "" && newChar === "=") break;
+      if (aggregate === "" && tempValue === "") {
+        tempValue = display;
+      }
+      tempValue = removeTrailingDecimal(tempValue);
+      if (isLastCharOperand()) {
+        if (newChar !== "-") {
+          tempValue = removeTrailingOperand(tempValue);
+        } else {
+          tempValue = removeTrailingMinus(tempValue);
+        }
       } else {
         tempResult = display === "" ? tempValue : display;
         aggregate += tempValue;
         tempValue = "";
       }
-      tempValue += operand;
-      break;
-
-    case "-":
-      // pushing multiple '-' should be ignored
-      if (tempValue.slice(-1) !== "-") {
-        if (!isNaN(Number(tempValue.slice(-1)))) {
-          tempResult = display === "" ? tempValue : display;
-          aggregate += tempValue;
-          tempValue = "";
-        }
-        tempValue += action.type;
-      }
+      tempValue += newChar;
       break;
 
     case ".":
       // ensure only one decimal per number
       if (!tempValue.includes(".")) {
         // add implicit zero when decimal pushed after operand or after init
-        if (isNaN(Number(tempValue.slice(-1))) || tempValue === "") {
+        if (isLastCharOperand() || tempValue === "") {
           tempValue += "0";
         }
-        tempValue += action.type;
-      }
-      break;
-
-    case "=":
-      // pushing '=' more than once or at init should be ignored
-      if (tempValue.slice(-1) !== "=" && aggregate !== "") {
-        // remove unfinished operand
-        if (isNaN(Number(tempValue.slice(-1)))) {
-          tempValue = tempValue.slice(0, -1);
-        }
-        tempResult = display === "" ? tempValue : display;
-        aggregate += tempValue;
-        tempValue = action.type;
+        tempValue += newChar;
       }
       break;
 
@@ -187,19 +199,19 @@ function reducer(state, action) {
       throw new Error();
   }
 
-  // handle display based on logic
+  // handle display based on mode selected
   if (state.formulaLogic) {
-    if (aggregate !== "" && action.type === "=")
-      display = math.eval(aggregate).toString();
+    if (aggregate !== "" && newChar === "=")
+      display = evaluateMathFormula(aggregate);
     else if (tempValue === "") display = "0";
-    else display = tempValue.replace(/^[+\-*/.=]+/, "");
+    else display = tempValue.replace(/^[-+*/.=]+/, "");
   } else {
     if (tempValue === "" && aggregate === "") display = "0";
     else if (tempValue === "") display = "";
     else
-      display = math
-        .eval(tempResult + tempValue.replace(/[+\-*/.=]+$/, ""))
-        .toString();
+      display = evaluateMathFormula(
+        tempResult + tempValue.replace(/[-+*/.=]+$/, "")
+      );
   }
 
   return {

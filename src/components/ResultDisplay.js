@@ -17,10 +17,8 @@ const StyledResultDisplay = styled.p`
   align-items: center;
 `;
 
-const ResultDisplay = props => {
+export default function ResultDisplay(props) {
   return (
     <StyledResultDisplay id="display">{props.display}</StyledResultDisplay>
   );
-};
-
-export default ResultDisplay;
+}

@@ -11,7 +11,7 @@ const StyledDisplay = styled.div`
   flex-direction: column;
 `;
 
-const Display = props => {
+export default function Display(props) {
   return (
     <StyledDisplay>
       <ModeDisplay formulaLogic={props.formulaLogic} />
@@ -19,6 +19,4 @@ const Display = props => {
       <ResultDisplay display={props.display} />
     </StyledDisplay>
   );
-};
-
-export default Display;
+}

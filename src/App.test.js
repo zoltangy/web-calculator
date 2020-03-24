@@ -22,6 +22,8 @@ describe("formula logic tests", () => {
     expect(wrapper.find("p#aggregateDisplay").text()).toBe("1");
     wrapper.find("button#add").simulate("click");
     wrapper.find("button#one").simulate("click");
+    expect(wrapper.find("p#display").text()).toBe("1");
+    expect(wrapper.find("p#aggregateDisplay").text()).toBe("1+1");
     wrapper.find("button#equals").simulate("click");
     expect(wrapper.find("p#display").text()).toBe("2");
     expect(wrapper.find("p#aggregateDisplay").text()).toBe("1+1=");
@@ -131,6 +133,8 @@ describe("formula logic tests", () => {
     wrapper.find("button#subtract").simulate("click");
     wrapper.find("button#decimal").simulate("click");
     wrapper.find("button#two").simulate("click");
+    expect(wrapper.find("p#display").text()).toBe("0.2");
+    expect(wrapper.find("p#aggregateDisplay").text()).toBe("0.5-0.2");
     wrapper.find("button#add").simulate("click");
     wrapper.find("button#two").simulate("click");
     wrapper.find("button#decimal").simulate("click");
@@ -148,6 +152,8 @@ describe("formula logic tests", () => {
     wrapper.find("button#decimal").simulate("click");
     wrapper.find("button#add").simulate("click");
     wrapper.find("button#two").simulate("click");
+    expect(wrapper.find("p#display").text()).toBe("2");
+    expect(wrapper.find("p#aggregateDisplay").text()).toBe("0.5+2+2");
     wrapper.find("button#decimal").simulate("click");
     wrapper.find("button#equals").simulate("click");
     expect(wrapper.find("p#display").text()).toBe("4.5");

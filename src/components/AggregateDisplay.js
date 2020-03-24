@@ -14,12 +14,10 @@ const StyledAggregateDisplay = styled.p`
   text-align: right;
 `;
 
-const AggregateDisplay = props => {
+export default function AggregateDisplay(props) {
   return (
     <StyledAggregateDisplay id="aggregateDisplay">
       {props.aggregate}
     </StyledAggregateDisplay>
   );
-};
-
-export default AggregateDisplay;
+}

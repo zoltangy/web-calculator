@@ -1,7 +1,10 @@
 import { createGlobalStyle } from "styled-components";
 import myFont from "./fonts/Display.ttf";
+import { normalize } from "styled-normalize";
 
 const GlobalStyle = createGlobalStyle`
+  ${normalize}
+    
   @font-face {
     font-family: 'Display';
     src: url(${myFont}) format('truetype');
