@@ -1,4 +1,4 @@
-import { createGlobalStyle } from "styled-components";
+import { createGlobalStyle, css } from "styled-components";
 import myFont from "./fonts/Display.ttf";
 import { normalize } from "styled-normalize";
 
@@ -24,6 +24,12 @@ const GlobalStyle = createGlobalStyle`
     margin: 0;
     background-color: ${props => props.theme.bg};
     font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    ${props =>
+      props.transitionEnabled &&
+      css`
+        transition: all 0.3s linear;
+      `};
+    
   }
 `;
 

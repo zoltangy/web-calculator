@@ -1,4 +1,4 @@
-import React, { useReducer, useState } from "react";
+import React, { useReducer, useState, useEffect } from "react";
 import styled, { ThemeProvider } from "styled-components";
 import { darkTheme, lightTheme } from "./Themes";
 import math from "mathjs-expression-parser";
@@ -29,11 +29,17 @@ const Calculator = styled.div`
 function App() {
   const [state, dispatch] = useReducer(reducer, init());
   const [themeToggle, setTheme] = useState(true);
+  const [transitionEnabled, setTransitionEnabled] = useState(false);
+
+  // enable transition only after initial load
+  useEffect(() => {
+    setTransitionEnabled(true);
+  }, []);
 
   return (
     <StyledApp>
       <ThemeProvider theme={themeToggle ? lightTheme : darkTheme}>
-        <GlobalStyle />
+        <GlobalStyle transitionEnabled={transitionEnabled} />
         <ThemeSelector
           checked={themeToggle}
           handleToggle={() => setTheme(!themeToggle)}
