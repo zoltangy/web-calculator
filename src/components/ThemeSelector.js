@@ -2,7 +2,7 @@ import React from "react";
 import styled from "styled-components";
 
 const Wrapper = styled.div`
-  height: 1.5rem;
+  height: 24px;
   padding: 7px 7px 0 0;
   width: 320px;
   display: flex;
@@ -14,10 +14,10 @@ const Wrapper = styled.div`
 const StyledCheckBox = styled.input.attrs({ type: "checkbox" })`
   position: relative;
   appearance: none;
-  width: 2rem;
-  height: calc(2rem / 2);
+  width: 32px;
+  height: 16px;
   background-color: ${props => props.theme.bg};
-  border-radius: calc(2rem / 2);
+  border-radius: 16px;
   border-color: ${props => props.theme.border};
   outline: none;
   transition: background 450ms ease;
@@ -32,14 +32,23 @@ const StyledCheckBox = styled.input.attrs({ type: "checkbox" })`
   }
 
   &:before {
-    width: calc(2rem / 2);
-    height: calc(2rem / 2);
+    width: 16px;
+    height: 16px;
     background-color: ${props => props.theme.buttonBg1};
   }
   &:checked:before {
     background-color: ${props => props.theme.buttonBg1};
     transform: translateX(100%);
   }
+`;
+
+const HiddenLabel = styled.label`
+  position: absolute;
+  left: -1000px;
+  top: auto;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
 `;
 
 export default function ThemeSelector(props) {
@@ -50,7 +59,9 @@ export default function ThemeSelector(props) {
           props.handleToggle();
         }}
         checked={props.checked}
+        id="themeToggle"
       />
+      <HiddenLabel htmlFor="themeToggle">Toggle Theme</HiddenLabel>
     </Wrapper>
   );
 }

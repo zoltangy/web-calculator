@@ -12,11 +12,21 @@ const GlobalStyle = createGlobalStyle`
   }
 
   html {
-  box-sizing: border-box;
+    box-sizing: border-box;
+    ${props =>
+      props.transitionEnabled &&
+      css`
+        transition: all 0.2s linear;
+      `};
   }
 
   *, *:before, *:after {
-  box-sizing: inherit;
+    box-sizing: inherit;
+    ${props =>
+      props.transitionEnabled &&
+      css`
+        transition: inherit;
+      `};
   }
 
   body {
@@ -24,12 +34,12 @@ const GlobalStyle = createGlobalStyle`
     margin: 0;
     background-color: ${props => props.theme.bg};
     font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
-    ${props =>
-      props.transitionEnabled &&
-      css`
-        transition: all 0.3s linear;
-      `};
-    
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    width: 100%;
   }
 `;
 
