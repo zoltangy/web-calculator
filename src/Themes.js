@@ -2,7 +2,7 @@ const darkTheme = {
   bg: "#2B384C",
   border: "#A9ABBC",
   color: "#F0F2EF",
-  display: "#7a7473",
+  display: "#6e6867",
   buttonShadow: "#92979F",
   buttonBorder: "#7D5E5A",
   buttonText: "#F0F2EF",
@@ -25,5 +25,3 @@ const lightTheme = {
 };
 
 export { darkTheme, lightTheme };
-
-//color: "#cddeaa",
