@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import styled, { css } from "styled-components";
 
 const StyledButton = styled.button`
@@ -26,6 +26,13 @@ const StyledButton = styled.button`
   font-weight: bold;
   text-decoration: none;
   text-shadow: 0px -1px 0px ${props => props.theme.buttonTextShadow};
+  ${props =>
+    !props.keyboardUser &&
+    css`
+      &:focus {
+        outline: none;
+      }
+    `};
   &:hover {
     background: linear-gradient(
       to bottom,
@@ -41,10 +48,23 @@ const StyledButton = styled.button`
 `;
 
 export default function Button(props) {
+  // Add outline to buttons if Tab is pressed for keyboard users
+  const [keyboardUser, setKeyboardUser] = useState(false);
+  useEffect(() => {
+    function handleKeyDown(e) {
+      if (e.keyCode === 9) {
+        setKeyboardUser(true);
+        document.removeEventListener("keydown", handleKeyDown);
+      }
+    }
+    document.addEventListener("keydown", handleKeyDown);
+  }, []);
+
   return (
     <StyledButton
       id={props.id}
       doubleX={!!props.doubleX}
+      keyboardUser={keyboardUser}
       onClick={e => {
         props.handleClick({ type: e.target.innerHTML });
       }}
