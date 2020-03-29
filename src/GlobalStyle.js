@@ -38,6 +38,7 @@ const GlobalStyle = createGlobalStyle`
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    min-height: 480px;
     height: 100vh;
     width: 100%;
   }
