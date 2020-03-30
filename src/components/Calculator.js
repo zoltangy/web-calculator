@@ -129,7 +129,7 @@ function reducer(state, action) {
     case "7":
     case "8":
     case "9":
-      if (tempValue.length >= 17 || (aggregate + tempValue).length > 24) {
+      if (tempValue.length >= 17 || (aggregate + tempValue).length >= 25) {
         return state;
       }
       tempValue = removeLeadingZerosInNumbers(tempValue);
