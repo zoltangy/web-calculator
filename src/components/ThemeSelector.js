@@ -8,60 +8,66 @@ const Wrapper = styled.div`
   display: flex;
   justify-content: flex-end;
   align-items: center;
-  background-color: ${props => props.theme.border};
+  background-color: ${(props) => props.theme.border};
 `;
 
 const StyledCheckBox = styled.input.attrs({ type: "checkbox" })`
-  position: relative;
-  appearance: none;
-  width: 32px;
-  height: 16px;
-  background-color: ${props => props.theme.bg};
-  border-radius: 16px;
-  border-color: ${props => props.theme.border};
-  outline: none;
-  transition: background 450ms ease;
-
-  &:before,
-  &:after {
-    position: absolute;
-    display: block;
-    content: "";
-    border-radius: 100%;
-    transition: background 450ms ease, transform 450ms ease;
-  }
-
-  &:before {
-    width: 16px;
-    height: 16px;
-    background-color: ${props => props.theme.buttonBg1};
-  }
-  &:checked:before {
-    background-color: ${props => props.theme.buttonBg1};
-    transform: translateX(100%);
-  }
+  opacity: 0;
+  width: 0;
+  height: 0;
 `;
 
-const HiddenLabel = styled.label`
+const ToggleLabel = styled.label`
+  position: relative;
+  display: inline-block;
+  width: 36px;
+  height: 20px;
+`;
+
+const ToggleSpan = styled.span`
   position: absolute;
-  left: -1000px;
-  top: auto;
-  width: 1px;
-  height: 1px;
-  overflow: hidden;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: ${(props) => props.theme.bg};
+  border-radius: 16px;
+  transition: background 450ms ease;
+
+  &:before {
+    position: absolute;
+    display: block;
+    left: 2px;
+    top: 2px;
+    width: 16px;
+    height: 16px;
+    content: "";
+    border-radius: 100%;
+    border-color: ${(props) => props.theme.border};
+    background-color: ${(props) => props.theme.buttonBg1};
+    transition: background 450ms ease, transform 450ms ease;
+  }
+  input[type="checkbox"]:checked + &:before {
+    background-color: ${(props) => props.theme.buttonBg1};
+    transform: translateX(16px);
+  }
 `;
 
 export default function ThemeSelector(props) {
   return (
     <Wrapper>
-      <StyledCheckBox
-        onChange={() => {
-          props.handleToggle();
-        }}
-        checked={props.checked}
-        id="themeToggle"
-      />
-      <HiddenLabel htmlFor="themeToggle">Toggle Theme</HiddenLabel>
+      <ToggleLabel>
+        <StyledCheckBox
+          onChange={() => {
+            props.handleToggle();
+          }}
+          checked={props.checked}
+          id="themeToggle"
+          aria-label="Toggle theme"
+        />
+        <ToggleSpan></ToggleSpan>
+      </ToggleLabel>
     </Wrapper>
   );
 }

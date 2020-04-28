@@ -3,30 +3,30 @@ import styled, { css } from "styled-components";
 
 const StyledButton = styled.button`
   width: calc(100% / 4);
-  ${props =>
+  ${(props) =>
     props.doubleX &&
     css`
       width: calc(100% / 2);
     `};
 
   height: calc(100% / 7);
-  box-shadow: inset 0px 1px 3px 0px ${props => props.theme.buttonShadow};
+  box-shadow: inset 0px 1px 3px 0px ${(props) => props.theme.buttonShadow};
   background: linear-gradient(
     to bottom,
-    ${props => props.theme.buttonBg1} 5%,
-    ${props => props.theme.buttonBg2} 100%
+    ${(props) => props.theme.buttonBg1} 5%,
+    ${(props) => props.theme.buttonBg2} 100%
   );
-  background-color: ${props => props.theme.buttonBg1};
+  background-color: ${(props) => props.theme.buttonBg1};
   border-radius: 5px;
-  border: 1px solid ${props => props.theme.buttonBorder};
+  border: 1px solid ${(props) => props.theme.buttonBorder};
   display: inline-block;
-  color: ${props => props.theme.buttonText};
+  color: ${(props) => props.theme.buttonText};
   font-family: Arial;
   font-size: 15px;
   font-weight: bold;
   text-decoration: none;
-  text-shadow: 0px -1px 0px ${props => props.theme.buttonTextShadow};
-  ${props =>
+  text-shadow: 0px -1px 0px ${(props) => props.theme.buttonTextShadow};
+  ${(props) =>
     !props.keyboardUser &&
     css`
       &:focus {
@@ -36,10 +36,10 @@ const StyledButton = styled.button`
   &:hover {
     background: linear-gradient(
       to bottom,
-      ${props => props.theme.buttonBg2} 5%,
-      ${props => props.theme.buttonBg1} 100%
+      ${(props) => props.theme.buttonBg2} 5%,
+      ${(props) => props.theme.buttonBg1} 100%
     );
-    background-color: ${props => props.theme.buttonBg2};
+    background-color: ${(props) => props.theme.buttonBg2};
   }
   &:active {
     position: relative;
@@ -63,9 +63,10 @@ export default function Button(props) {
   return (
     <StyledButton
       id={props.id}
+      type="button"
       doubleX={!!props.doubleX}
       keyboardUser={keyboardUser}
-      onClick={e => {
+      onClick={(e) => {
         props.handleClick({ type: e.target.innerHTML });
       }}
     >

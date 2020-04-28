@@ -18,10 +18,7 @@ function App() {
   return (
     <ThemeProvider theme={themeToggle ? lightTheme : darkTheme}>
       <GlobalStyle transitionEnabled={transitionEnabled} />
-      <ThemeSelector
-        checked={themeToggle}
-        handleToggle={() => setTheme(!themeToggle)}
-      />
+      <ThemeSelector checked={themeToggle} handleToggle={() => setTheme(!themeToggle)} />
       <Calculator />
     </ThemeProvider>
   );
