@@ -5,9 +5,12 @@ import Display from "./Display";
 import Button from "./Button";
 import math from "mathjs-expression-parser";
 
+const maxCharDisplay = 17;
+const maxCharAggregate = 25;
+
 const CalculatorWrapper = styled.div`
-  border: 7px solid ${props => props.theme.border};
-  background-color: ${props => props.theme.border};
+  border: 7px solid ${(props) => props.theme.border};
+  background-color: ${(props) => props.theme.border};
   width: 320px;
   height: 455px;
   display: flex;
@@ -55,7 +58,7 @@ function init(formulaLogic = true) {
     display: "0",
     formulaLogic: formulaLogic,
     tempResult: "",
-    tempValue: ""
+    tempValue: "",
   };
 }
 
@@ -94,7 +97,7 @@ function reducer(state, action) {
   }
 
   function evaluateMathFormula(str) {
-    return math.format(math.eval(str), 12);
+    return math.format(math.eval(str), { lowerExp: -10, upperExp: 11, precision: maxCharDisplay - 5 });
   }
 
   // new calc or result carry over
@@ -129,7 +132,7 @@ function reducer(state, action) {
     case "7":
     case "8":
     case "9":
-      if (tempValue.length >= 17 || (aggregate + tempValue).length >= 25) {
+      if (tempValue.length >= maxCharDisplay || (aggregate + tempValue).length >= maxCharAggregate) {
         return state;
       }
       tempValue = removeLeadingZerosInNumbers(tempValue);
@@ -178,17 +181,13 @@ function reducer(state, action) {
 
   // handle display based on mode selected
   if (state.formulaLogic) {
-    if (aggregate !== "" && newChar === "=")
-      display = evaluateMathFormula(aggregate);
+    if (aggregate !== "" && newChar === "=") display = evaluateMathFormula(aggregate);
     else if (tempValue === "") display = "0";
     else display = tempValue.replace(/^[-+*/.=]+/, "");
   } else {
     if (tempValue === "" && aggregate === "") display = "0";
     else if (tempValue === "") display = "";
-    else
-      display = evaluateMathFormula(
-        tempResult + tempValue.replace(/[-+*/.=]+$/, "")
-      );
+    else display = evaluateMathFormula(tempResult + tempValue.replace(/[-+*/.=]+$/, ""));
   }
 
   return {
@@ -196,7 +195,7 @@ function reducer(state, action) {
     display: display,
     aggregate: aggregate,
     tempResult: tempResult,
-    tempValue: tempValue
+    tempValue: tempValue,
   };
 }
 
